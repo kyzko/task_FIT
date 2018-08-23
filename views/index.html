@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Task</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.js"></script>
+</head>
+<body>
+<div>
+<form name="comment" action="/" method="post" id="form">
+    <p>
+        <label>Имя:</label>
+        <input type="text" name="name"  placeholder="Введите имя" >
+    </p>
+    <p>
+    <label>Комментарий:</label>
+    <br>
+    <textarea name="comment" required placeholder="Введите комментарий" cols="50" rows="5" id="comment"></textarea>
+    </p>
+    <p>
+        <input type="submit" value="Отправить">
+    </p>
+</form>
+<form class= name="outcome" id="outcome"></form>
+</div>
+
+<script>
+    $("form").submit(function (e) {
+        e.preventDefault();
+        let form = document.forms.comment;
+        let name = form.elements.name.value;
+        let comment = form.elements.comment.value;
+        let outcome = document.forms.outcome;
+        let date = moment().format('MMMM Do YYYY, HH:mm:ss');
+        $.ajax({
+            method: 'POST',
+            url: '/api/comments',
+            data: JSON.stringify({name: name, data:date,  comment:comment}),
+            dataType: "json",
+            contentType: "application/json",
+            success: function (data) {
+                console.log(data);
+                $.ajax({
+                    method: "GET",
+                    url: "/api/comments",
+                    dataType: "json",
+                    contentType: "application/json",
+                    success:function (data) {
+                        $(outcome).empty();
+               for (let i=data.length-1; i>0; --i) {
+                   let time = moment().format('MMMM Do YYYY, HH:mm:ss');
+                   $(outcome).append(`<textarea readonly cols="50">Имя: ${data[i].name}  ${moment(data[i].date)} </textarea>  </br>`);
+                   $(outcome).append(`<textarea readonly required cols="50" rows="5">Комментарий: ${data[i].comment} </textarea> </br>`);
+               }
+            }
+        });
+            }
+        });
+    });
+    $.ajax({
+        method: "GET",
+        url: "/api/comments",
+        dataType: "json",
+        contentType: "application/json",
+        success: function (data) {
+            for (let i = data.length - 1; i > 0; --i) {
+                $(outcome).append(`<textarea readonly cols="50">Имя: ${data[i].name}  ${moment(data[i].date)} </textarea>  </br>`);
+                $(outcome).append(`<textarea readonly required cols="50" rows="5">Комментарий: ${data[i].comment} </textarea> </br>`);
+            }
+        }
+    });
+</script>
+</body>
+</html>

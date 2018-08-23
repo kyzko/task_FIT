@@ -1,0 +1,16 @@
+body {
+    background-color: rgba(194, 193, 215, 0.28);
+    text-align: center;
+}
+label {
+    font-weight: bold ;
+    font-style: italic;
+    color: rgba(99, 84, 96, 0.9);
+}
+textarea {
+    font-weight: normal;
+    font-style: italic;
+}
+input {
+    font-style: italic;
+}
