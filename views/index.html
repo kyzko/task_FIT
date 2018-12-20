@@ -23,6 +23,13 @@
         <input type="submit" value="Отправить">
     </p>
 </form>
+    <form name="sort" action="/" id="sort">
+        <select>
+            <option>Отсортировать</option>
+            <option value="1">По длине</option>
+        </select>
+    </form>
+    <br>
 <form class= name="outcome" id="outcome"></form>
 </div>
 
@@ -36,7 +43,7 @@
         let date = moment().format('MMMM Do YYYY, HH:mm:ss');
         $.ajax({
             method: 'POST',
-            url: '/api/comments',
+            url: '/api/comment',
             data: JSON.stringify({name: name, data:date,  comment:comment}),
             dataType: "json",
             contentType: "application/json",
@@ -44,7 +51,7 @@
                 console.log(data);
                 $.ajax({
                     method: "GET",
-                    url: "/api/comments",
+                    url: "/api/comment",
                     dataType: "json",
                     contentType: "application/json",
                     success:function (data) {
@@ -61,7 +68,7 @@
     });
     $.ajax({
         method: "GET",
-        url: "/api/comments",
+        url: "/api/comment",
         dataType: "json",
         contentType: "application/json",
         success: function (data) {
